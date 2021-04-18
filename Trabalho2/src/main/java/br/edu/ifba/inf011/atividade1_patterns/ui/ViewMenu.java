@@ -153,7 +153,7 @@ public class ViewMenu extends JFrame implements ActionListener {
 					editor = (TextEditor) fabrica.criarEditor(file, syntaxJava);
 					editor.setVisible(true);
 				} else if(extensao.equalsIgnoreCase("cpp")){
-					fabrica = new FactoryCpp();
+					fabrica = FactoryCpp.getInstance();
 					editor = (TextEditor) fabrica.criarEditor(file, syntaxCpp);
 					editor.setVisible(true);
 				}

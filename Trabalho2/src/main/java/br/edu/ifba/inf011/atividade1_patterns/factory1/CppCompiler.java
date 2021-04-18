@@ -6,7 +6,7 @@ import java.io.IOException;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 
 public class CppCompiler implements IBuilder {
-	private static CppCompiler instance;
+	private static CppCompiler instance = null;
 	
 	private CppCompiler() {}
 

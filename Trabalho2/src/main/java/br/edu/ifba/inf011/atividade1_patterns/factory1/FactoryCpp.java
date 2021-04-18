@@ -10,6 +10,9 @@ import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
 import br.edu.ifba.inf011.atividade1_patterns.ui.TextEditor;
 
 public class FactoryCpp implements IFactory {
+	private static FactoryCpp instance = null;
+	
+	private FactoryCpp() {}
 
 	@Override
 	public IBuilder criarCompilador() {
@@ -19,6 +22,10 @@ public class FactoryCpp implements IFactory {
 	@Override
 	public JFrame criarEditor(File file, String syntax) {
 		return new TextEditor(file, syntax);
+	}
+	
+	public static FactoryCpp getInstance() {
+		return instance == null ? new FactoryCpp() : instance;
 	}
 
 }

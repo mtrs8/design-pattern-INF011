@@ -13,15 +13,12 @@ public class FactoryCpp implements IFactory {
 
 	@Override
 	public IBuilder criarCompilador() {
-		return new CppCompiler();
+		return CppCompiler.getInstance();
 	}
 
 	@Override
 	public JFrame criarEditor(File file, String syntax) {
 		return new TextEditor(file, syntax);
 	}
-
-	
-
 
 }

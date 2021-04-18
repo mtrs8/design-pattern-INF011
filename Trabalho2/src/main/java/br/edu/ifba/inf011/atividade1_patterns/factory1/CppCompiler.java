@@ -6,6 +6,9 @@ import java.io.IOException;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 
 public class CppCompiler implements IBuilder {
+	private static CppCompiler instance;
+	
+	private CppCompiler() {}
 
 	@Override
 	public void compile(File file) {
@@ -26,6 +29,10 @@ public class CppCompiler implements IBuilder {
 			}
 	    	System.out.println("Arquivo CPP compilado: status(" + process.exitValue()+")");
 		
+	}
+	
+	public static CppCompiler getInstance() {
+		return instance == null ? new CppCompiler() : instance;
 	}
 
 }

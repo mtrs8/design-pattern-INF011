@@ -1,4 +1,4 @@
-# ATIVIDADE 1 - APLICANDO O PADRÃO DE PROJETO ABSTRACT FACTORY EM UM EDITOR DE CÓDIGO
+# ATIVIDADE 2 - APLICANDO O PADRÃO DE PROJETO SINGLETON EM UM EDITOR DE CÓDIGO
 
 #### Abrindo um arquivo:
 ![openfileusingjava](https://user-images.githubusercontent.com/44441198/113437881-d82f1b80-93bd-11eb-84dc-19d1c63a7a77.png)

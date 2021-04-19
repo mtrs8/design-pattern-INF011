@@ -1,4 +1,4 @@
-package br.edu.ifba.inf011.atividade1_patterns.plugins.interfaces;
+package br.edu.ifba.inf011.atividade1_patterns.interfaces;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package br.edu.ifba.inf011.atividade1_patterns.plugins.interfaces;
+package br.edu.ifba.inf011.atividade1_patterns.plugins;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPluginController;
 
 public class PluginController implements IPlugin, IPluginController {
 	
@@ -46,12 +49,14 @@ public class PluginController implements IPlugin, IPluginController {
 								break;
 							}
 						}
+					} else
 						plugin = (IPlugin) pluginClass.newInstance();
-					}
 				} catch(ClassNotFoundException | InstantiationException | IllegalAccessException  ex) {
 					Logger.getLogger(PluginController.class.getName()).log(Level.SEVERE, null, ex);
 				}
-				
+				if(plugin != null)
+					if(plugin.initPlugin())
+						loadedPlugins.add(plugin);
 				return true;
 			}
 		} catch(Exception e) {

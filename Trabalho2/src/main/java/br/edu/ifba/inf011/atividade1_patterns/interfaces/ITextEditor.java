@@ -4,10 +4,10 @@ import java.io.File;
 
 import javax.swing.JFrame;
 
-public interface IFactory {
+public interface ITextEditor {
 	
-	public IBuilder criarCompilador();
+	public JFrame createTextEditor(File file);
 	
-	public JFrame criarEditor(File file);
-	
+	public boolean saveFile(File file);
+
 }

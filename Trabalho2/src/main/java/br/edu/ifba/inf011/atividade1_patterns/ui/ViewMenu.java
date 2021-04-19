@@ -16,7 +16,9 @@ import br.edu.ifba.inf011.atividade1_patterns.factory2.FactoryJava;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.JavaCompiler;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
-import br.edu.ifba.inf011.atividade1_patterns.plugins.interfaces.IPlugin;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPluginController;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
@@ -32,6 +34,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
@@ -46,7 +51,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 
-public class ViewMenu extends JFrame implements ActionListener {
+@SuppressWarnings("unchecked")
+public class ViewMenu extends JFrame {
 
 	private JPanel contentPane;
 	private String extensao;
@@ -58,14 +64,13 @@ public class ViewMenu extends JFrame implements ActionListener {
 	private JButton btnOpenFile;
 	private JButton btnSaveFile;
 	private JButton btnCompile;
-	//private JFrame jframe;
 	private JFileChooser jfc; 
-	private TextEditor editor;
-	private String syntaxJava = SyntaxConstants.SYNTAX_STYLE_JAVA;
-	private String syntaxCpp = SyntaxConstants.SYNTAX_STYLE_CPLUSPLUS;
+	private ITextEditor editor;
+	private IPluginController pluginController;
+	private List plugins;
 	
 	
-	public ViewMenu() {
+	public ViewMenu() throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 300, 450, 300);
 		contentPane = new JPanel();
@@ -79,9 +84,30 @@ public class ViewMenu extends JFrame implements ActionListener {
 		btnSaveFile = new JButton("Save File");
 		btnOpenFile = new JButton("Open File");
 		btnCompile = new JButton(" Compile File");
-		btnOpenFile.addActionListener(this);
-		btnSaveFile.addActionListener(this);
-		btnCompile.addActionListener(this);
+		
+		btnOpenFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				btnOpenFile();
+			}
+		});
+		btnSaveFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				btnSaveFile();
+			}
+		});
+		btnCompile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					btnCompile();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		
 		btnOpenFile.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -120,61 +146,62 @@ public class ViewMenu extends JFrame implements ActionListener {
 					.addGap(44))
 		);
 		contentPane.setLayout(gl_contentPane);
-		//contentPane.disable();
+		createFactory();
 	}
-		
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource() == btnOpenFile) {
-				try {					
-					jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					int i = jfc.showOpenDialog(null);
-					if(i==1) {
-						textField.setText("");
-					} else {
-						file = jfc.getSelectedFile();
-					}
-					
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Please! Choose a file!");
-				}
-				extensao = FilenameUtils.getExtension(jfc.getSelectedFile().getAbsolutePath());
-				
-				String strTemp = Character.toUpperCase(extensao.charAt(0)) + extensao.substring(1);
-				System.out.print(strTemp);
-				try {
-					fabrica = (IFactory) Class.forName("Factory" + strTemp).newInstance();
-				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
-					e1.printStackTrace();
-				}
+	
+	public void createFactory() {
+		try {
+			//plugins = pluginController.getLoadedPlugins();
+			System.out.println(getExtension());
+			Class metaClass =  Class.forName("Factory" + getExtension());
+			Method[] methods = metaClass.getDeclaredMethods();
+			for(Method m : methods)
+				System.out.println(m.getName() + " - " + Modifier.isStatic(m.getModifiers()));
+			Method getInstanceMethod = metaClass.getDeclaredMethod("getInstance", Object.class);
+			Object value = getInstanceMethod.invoke(metaClass.newInstance(), "");
 			
-				/*if(extensao.equalsIgnoreCase("java")){
-					fabrica = new FactoryJava();
-					editor = (TextEditor) fabrica.criarEditor(file, syntaxJava);
-					editor.setVisible(true);
-				} else if(extensao.equalsIgnoreCase("cpp")){
-					fabrica = FactoryCpp.getInstance();
-					editor = (TextEditor) fabrica.criarEditor(file, syntaxCpp);
-					editor.setVisible(true);
-				}*/
-			}
-			if(e.getSource() == btnCompile) {
-				try{
-					build = fabrica.criarCompilador();
-					build.compile(file);
-					JOptionPane.showMessageDialog(null, "File compiled successfully!!");
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Error Compile!!");
-				}
-			} else if(file == null){
-				JOptionPane.showMessageDialog(null, "Please! Choose a valid file!");
-				new ViewMenu();
-			}
-			
-			if(e.getSource() == btnSaveFile) {
-				editor.saveFile();
-				JOptionPane.showMessageDialog(null, "Saved successfully");
-			}
-			
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+		
+	}
+	
+	private void btnOpenFile() {
+			try {					
+				jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int i = jfc.showOpenDialog(null);
+				if(i==1) textField.setText("");
+				else file = jfc.getSelectedFile();
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, "Please! Choose a file!");
+			}
+	}
+	
+	private void btnSaveFile() {
+		editor = (ITextEditor) fabrica.criarEditor(file);
+		editor.saveFile(file);
+		JOptionPane.showMessageDialog(null, "Saved successfully");
+	}
+	
+	private void btnCompile() throws Exception {
+			try{
+				build = fabrica.criarCompilador();
+				build.compile(file);
+				JOptionPane.showMessageDialog(null, "File compiled successfully!!");
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, "Error Compile!!");
+			}
+			if(file == null){
+			JOptionPane.showMessageDialog(null, "Please! Choose a valid file!");
+			new ViewMenu();
+		}
+	}
+	
+	public String getExtension() {
+		String extensao = FilenameUtils.getExtension(jfc.getSelectedFile().getAbsolutePath());
+		System.out.println(Character.toUpperCase(extensao.charAt(0)) + extensao.substring(1));
+		return "Cpp";
+		
+	}
 		
 }

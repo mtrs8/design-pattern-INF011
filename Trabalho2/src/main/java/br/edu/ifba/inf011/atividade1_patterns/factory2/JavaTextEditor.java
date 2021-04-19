@@ -1,4 +1,4 @@
-package br.edu.ifba.inf011.atividade1_patterns.ui;
+package br.edu.ifba.inf011.atividade1_patterns.factory2;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
@@ -15,13 +15,18 @@ import javax.swing.JPanel;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
+
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
+
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
 
-public class TextEditor extends JFrame {
+public class JavaTextEditor extends JFrame implements ITextEditor {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private JPanel cp;
 	private RSyntaxTextArea textArea;
@@ -30,7 +35,7 @@ public class TextEditor extends JFrame {
 	private FileReader reader; 
 	private BufferedReader br;
 	
-	public TextEditor(File file, String syntax){
+	public void initEditor(File file){
 		this.file = file;
 		cp = new JPanel(new BorderLayout());
 		cp.setBorder(new CompoundBorder(UIManager.getBorder("Button.border"), null));
@@ -38,18 +43,18 @@ public class TextEditor extends JFrame {
 	    setTitle("Code Editor");
 	    this.textArea = new RSyntaxTextArea(20, 60);
 	    textArea.setCodeFoldingEnabled(true);
-	    textArea.setSyntaxEditingStyle(syntax);
+	    textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 	    sp = new RTextScrollPane(textArea);
 	    cp.add(sp);
 	    this.setContentPane(cp);
 	    setLocationRelativeTo(null);
-	    textArea.setText(loadFile(file));
+	    textArea.setText(loadFile());
 	    textArea.setVisible(true);
 	    pack();
 	}
 	
 	
-	private String loadFile(File file) {
+	private String loadFile() {
 		String br2 = null;
 		try {
 			reader = new FileReader(file.getPath());
@@ -70,9 +75,16 @@ public class TextEditor extends JFrame {
 		}
 		return this.textArea.getText();
 	}
-	
-	
-	public boolean saveFile() {
+
+	@Override
+	public JFrame createTextEditor(File file) {
+		initEditor(file);
+		return null;
+	}
+
+
+	@Override
+	public boolean saveFile(File file) {
 		try{
 			 String str = this.textArea.getText();
 			 BufferedWriter writer = new BufferedWriter(new FileWriter(this.file));

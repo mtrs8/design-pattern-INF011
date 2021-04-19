@@ -6,23 +6,25 @@ import javax.swing.JFrame;
 
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
-import br.edu.ifba.inf011.atividade1_patterns.ui.TextEditor;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
 
 public class FactoryJava implements IFactory {
-	public static FactoryJava instance = null;
+	private static FactoryJava instance = null;
+	private ITextEditor editor;
 
 	@Override
 	public IBuilder criarCompilador() {
 		return new JavaCompiler();
 	}
 
-	@Override
-	public JFrame criarEditor(File file, String syntax) {
-		return new TextEditor(file, syntax);
-	}
 	
-	public static FactoryJava getInstance() {
+	public static IFactory getInstance() {
 		return instance == null ? new FactoryJava() : instance;
+	}
+
+	@Override
+	public JFrame criarEditor(File file) {
+		return editor.createTextEditor(file);
 	}
 
 	

@@ -7,10 +7,11 @@ import javax.swing.JFrame;
 
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
-import br.edu.ifba.inf011.atividade1_patterns.ui.TextEditor;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
 
 public class FactoryCpp implements IFactory {
 	private static FactoryCpp instance = null;
+	private ITextEditor editor;
 	
 	private FactoryCpp() {}
 
@@ -18,14 +19,14 @@ public class FactoryCpp implements IFactory {
 	public IBuilder criarCompilador() {
 		return CppCompiler.getInstance();
 	}
-
-	@Override
-	public JFrame criarEditor(File file, String syntax) {
-		return new TextEditor(file, syntax);
-	}
 	
 	public static FactoryCpp getInstance() {
 		return instance == null ? new FactoryCpp() : instance;
+	}
+
+	@Override
+	public JFrame criarEditor(File file) {
+		return editor.createTextEditor(file);
 	}
 
 }

@@ -55,7 +55,6 @@ public class ViewMenu extends JFrame implements ActionListener {
 	private IBuilder build;
 	private IFactory fabrica;
 	private JLabel lblTitulo;
-	private JButton btnAddPlugin;
 	private JButton btnOpenFile;
 	private JButton btnSaveFile;
 	private JButton btnCompile;
@@ -78,11 +77,9 @@ public class ViewMenu extends JFrame implements ActionListener {
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		btnSaveFile = new JButton("Save File");
-		btnAddPlugin = new JButton("Add Plug-in");		
 		btnOpenFile = new JButton("Open File");
 		btnCompile = new JButton(" Compile File");
 		btnOpenFile.addActionListener(this);
-		btnAddPlugin.addActionListener(this);
 		btnSaveFile.addActionListener(this);
 		btnCompile.addActionListener(this);
 		
@@ -97,18 +94,18 @@ public class ViewMenu extends JFrame implements ActionListener {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(23)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnSaveFile, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE))
+					.addComponent(btnSaveFile, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
 					.addGap(48)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnCompile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnAddPlugin, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
+					.addComponent(btnCompile, GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
 					.addContainerGap(12, Short.MAX_VALUE))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(88)
 					.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(93, Short.MAX_VALUE))
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(126)
+					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(132, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -118,11 +115,9 @@ public class ViewMenu extends JFrame implements ActionListener {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSaveFile, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnCompile, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnOpenFile, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-						.addComponent(btnAddPlugin, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
-					.addGap(60))
+					.addGap(34)
+					.addComponent(btnOpenFile, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+					.addGap(44))
 		);
 		contentPane.setLayout(gl_contentPane);
 		//contentPane.disable();
@@ -144,11 +139,15 @@ public class ViewMenu extends JFrame implements ActionListener {
 				}
 				extensao = FilenameUtils.getExtension(jfc.getSelectedFile().getAbsolutePath());
 				
-				//String strTemp = Character.toUpperCase(extensao.charAt(0)) + extensao.substring(1);
-				//System.out.print(strTemp);
-				//fabrica = (IFactory) Class.forName("Factory" + strTemp).newInstance();
+				String strTemp = Character.toUpperCase(extensao.charAt(0)) + extensao.substring(1);
+				System.out.print(strTemp);
+				try {
+					fabrica = (IFactory) Class.forName("Factory" + strTemp).newInstance();
+				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
 			
-				if(extensao.equalsIgnoreCase("java")){
+				/*if(extensao.equalsIgnoreCase("java")){
 					fabrica = new FactoryJava();
 					editor = (TextEditor) fabrica.criarEditor(file, syntaxJava);
 					editor.setVisible(true);
@@ -156,7 +155,7 @@ public class ViewMenu extends JFrame implements ActionListener {
 					fabrica = FactoryCpp.getInstance();
 					editor = (TextEditor) fabrica.criarEditor(file, syntaxCpp);
 					editor.setVisible(true);
-				}
+				}*/
 			}
 			if(e.getSource() == btnCompile) {
 				try{
@@ -174,10 +173,6 @@ public class ViewMenu extends JFrame implements ActionListener {
 			if(e.getSource() == btnSaveFile) {
 				editor.saveFile();
 				JOptionPane.showMessageDialog(null, "Saved successfully");
-			}
-			
-			if(e.getSource() == btnAddPlugin) {
-				JOptionPane.showMessageDialog(null, "Not implemented!");
 			}
 			
 		}

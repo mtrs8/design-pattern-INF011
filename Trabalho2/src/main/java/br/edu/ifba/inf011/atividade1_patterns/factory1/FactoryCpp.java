@@ -24,9 +24,4 @@ public class FactoryCpp implements IFactory {
 		return instance == null ? new FactoryCpp() : instance;
 	}
 
-	@Override
-	public JFrame criarEditor(File file) {
-		return editor.createTextEditor(file);
-	}
-
 }

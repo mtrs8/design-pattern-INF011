@@ -11,9 +11,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FilenameUtils;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
+import br.edu.ifba.inf011.atividade1_patterns.controllers.PluginController;
 import br.edu.ifba.inf011.atividade1_patterns.factory1.FactoryCpp;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.FactoryJava;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.JavaCompiler;
+import br.edu.ifba.inf011.atividade1_patterns.factory2.JavaTextEditor;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
@@ -36,6 +38,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
@@ -67,7 +70,7 @@ public class ViewMenu extends JFrame {
 	private JFileChooser jfc; 
 	private ITextEditor editor;
 	private IPluginController pluginController;
-	private List plugins;
+	private List<IPlugin> plugins;
 	
 	
 	public ViewMenu() throws Exception {
@@ -85,6 +88,8 @@ public class ViewMenu extends JFrame {
 		btnOpenFile = new JButton("Open File");
 		btnCompile = new JButton(" Compile File");
 		
+		this.plugins = new ArrayList();
+		this.pluginController = new PluginController();
 		btnOpenFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -146,13 +151,15 @@ public class ViewMenu extends JFrame {
 					.addGap(44))
 		);
 		contentPane.setLayout(gl_contentPane);
-		createFactory();
 	}
 	
 	public void createFactory() {
 		try {
-			//plugins = pluginController.getLoadedPlugins();
-			System.out.println(getExtension());
+			pluginController.initPlugin();
+			plugins = pluginController.getLoadedPlugins();
+			for(IPlugin p : plugins)
+				System.out.println(p);
+			
 			Class metaClass =  Class.forName("Factory" + getExtension());
 			Method[] methods = metaClass.getDeclaredMethods();
 			for(Method m : methods)
@@ -161,7 +168,7 @@ public class ViewMenu extends JFrame {
 			Object value = getInstanceMethod.invoke(metaClass.newInstance(), "");
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao criar fábricas.\nTente novamente!");
 		}
 		
 	}
@@ -175,33 +182,37 @@ public class ViewMenu extends JFrame {
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, "Please! Choose a file!");
 			}
+			createFactory();
+			editor = (ITextEditor) editor.createTextEditor(file);		
 	}
 	
 	private void btnSaveFile() {
-		editor = (ITextEditor) fabrica.criarEditor(file);
-		editor.saveFile(file);
-		JOptionPane.showMessageDialog(null, "Saved successfully");
-	}
-	
-	private void btnCompile() throws Exception {
-			try{
-				build = fabrica.criarCompilador();
-				build.compile(file);
-				JOptionPane.showMessageDialog(null, "File compiled successfully!!");
-			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, "Error Compile!!");
-			}
-			if(file == null){
-			JOptionPane.showMessageDialog(null, "Please! Choose a valid file!");
-			new ViewMenu();
+		try {
+			if(editor.saveFile(file))
+				JOptionPane.showMessageDialog(null, "Saved successfully");
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Error saving file");			
 		}
 	}
 	
+	private void btnCompile() {
+			if(file == null){
+				JOptionPane.showMessageDialog(null, "Please! Choose a valid file!");
+			} else {
+				try{
+					build = fabrica.criarCompilador();
+					build.compile(file);
+					JOptionPane.showMessageDialog(null, "File compiled successfully!!");
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Error Compile!!");
+				}				
+			}
+	}
+	
 	public String getExtension() {
-		String extensao = FilenameUtils.getExtension(jfc.getSelectedFile().getAbsolutePath());
-		System.out.println(Character.toUpperCase(extensao.charAt(0)) + extensao.substring(1));
-		return "Cpp";
-		
+		if(file !=null)
+			return FilenameUtils.getExtension(jfc.getSelectedFile().getPath());
+		return null;
 	}
 		
 }

@@ -10,7 +10,7 @@ import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
 
 public class FactoryJava implements IFactory {
 	private static FactoryJava instance = null;
-	private ITextEditor editor;
+	//private ITextEditor editor;
 
 	@Override
 	public IBuilder criarCompilador() {
@@ -21,11 +21,5 @@ public class FactoryJava implements IFactory {
 	public static IFactory getInstance() {
 		return instance == null ? new FactoryJava() : instance;
 	}
-
-	@Override
-	public JFrame criarEditor(File file) {
-		return editor.createTextEditor(file);
-	}
-
 	
 }

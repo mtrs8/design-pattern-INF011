@@ -79,7 +79,7 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 	@Override
 	public JFrame createTextEditor(File file) {
 		initEditor(file);
-		return null;
+		return new JavaTextEditor();
 	}
 
 

@@ -35,7 +35,7 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 	private FileReader reader; 
 	private BufferedReader br;
 	
-	public void initEditor(File file){
+	public JavaTextEditor(File file){
 		this.file = file;
 		cp = new JPanel(new BorderLayout());
 		cp.setBorder(new CompoundBorder(UIManager.getBorder("Button.border"), null));
@@ -78,8 +78,7 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 
 	@Override
 	public JFrame createTextEditor(File file) {
-		initEditor(file);
-		return new JavaTextEditor();
+		return new JavaTextEditor(file);
 	}
 
 

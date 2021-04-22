@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
 
 public class FactoryJava implements IFactory {

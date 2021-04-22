@@ -12,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import br.edu.ifba.inf011.atividade1_patterns.controllers.PluginController;
+import br.edu.ifba.inf011.atividade1_patterns.factory1.CppTextEditor;
 import br.edu.ifba.inf011.atividade1_patterns.factory1.FactoryCpp;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.FactoryJava;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.JavaCompiler;
@@ -69,6 +70,7 @@ public class ViewMenu extends JFrame {
 	private JButton btnCompile;
 	private JFileChooser jfc; 
 	private ITextEditor editor;
+	private JFrame jframe;
 	private IPluginController pluginController;
 	private List<IPlugin> plugins;
 	
@@ -154,23 +156,26 @@ public class ViewMenu extends JFrame {
 	}
 	
 	public void createFactory() {
-		try {
+		/*try {
 			pluginController.initPlugin();
 			plugins = pluginController.getLoadedPlugins();
-			for(IPlugin p : plugins)
-				System.out.println(p);
-			
-			Class metaClass =  Class.forName("Factory" + getExtension());
-			Method[] methods = metaClass.getDeclaredMethods();
-			for(Method m : methods)
-				System.out.println(m.getName() + " - " + Modifier.isStatic(m.getModifiers()));
-			Method getInstanceMethod = metaClass.getDeclaredMethod("getInstance", Object.class);
-			Object value = getInstanceMethod.invoke(metaClass.newInstance(), "");
 			
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Erro ao criar fábricas.\nTente novamente!");
+		}*/
+		if(getExtension().equalsIgnoreCase("java")){
+			fabrica = FactoryJava.getInstance();
+			editor = new JavaTextEditor(file);
+			System.out.println("TEST EDITOR JAVA");
+			this.jframe = editor.createTextEditor(file);
+			jframe.setVisible(true);
+		} else if(getExtension().equalsIgnoreCase("cpp")){
+			fabrica = FactoryCpp.getInstance();
+			System.out.println("Test editor CPP");
+			editor = new CppTextEditor(file);
+			this.jframe = editor.createTextEditor(file);
+			jframe.setVisible(true);
 		}
-		
 	}
 	
 	private void btnOpenFile() {
@@ -182,13 +187,12 @@ public class ViewMenu extends JFrame {
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, "Please! Choose a file!");
 			}
-			createFactory();
-			editor = (ITextEditor) editor.createTextEditor(file);		
+			createFactory();		
 	}
 	
 	private void btnSaveFile() {
 		try {
-			if(editor.saveFile(file))
+			if(editor.saveFile(file)) //FALTA CORRIGIR BOTÃO DE SALVAR
 				JOptionPane.showMessageDialog(null, "Saved successfully");
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Error saving file");			

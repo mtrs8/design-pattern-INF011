@@ -33,7 +33,7 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 	private FileReader reader; 
 	private BufferedReader br;
 	
-	public void initEditor(File file){
+	public CppTextEditor(File file){
 		this.file = file;
 		cp = new JPanel(new BorderLayout());
 		cp.setBorder(new CompoundBorder(UIManager.getBorder("Button.border"), null));
@@ -76,8 +76,7 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 
 	@Override
 	public JFrame createTextEditor(File file) {
-		initEditor(file);
-		return new CppTextEditor();
+		return new CppTextEditor(file);
 	}
 
 

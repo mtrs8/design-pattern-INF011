@@ -22,21 +22,22 @@ import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPluginController;
 public class PluginController implements IPlugin, IPluginController {
 	
 	private List<IPlugin> loadedPlugins = new ArrayList<IPlugin>();
-		private File diretorioAtual;
-		private JFileChooser jfc;
-		private JTextField textField = null;
+
 	@Override
 	public boolean initPlugin() {
 		try {
-			String filePath = "src\\main\\java\\br\\edu\\ifba\\inf011\\atividade1_patterns\\plugins\\";
-			diretorioAtual = new File(filePath);
+			/*Caminho relativo dos plugins:
+			 * 	Como utilizo Windows, tive que passar o caminho desde a raiz do projeto.
+			 *  O ./plugins não funcionou para mim.   
+			 */
+			String filePath = "./src/main/java/br/edu/ifba/inf011/atividade1_patterns/plugins/"; 
+			File diretorioAtual = new File(filePath);
 			String[] plugins = diretorioAtual.list();
 			int i;
 			URL[] jars = new URL[plugins.length];
 			System.out.println("Plugins instalados: " + plugins.length);
 			for(i=0; i<plugins.length; i++) {
-				jars[i] = (new File(filePath + plugins[i])).toURI().toURL();
-				//System.out.println(jars[i]);		
+				jars[i] = (new File(filePath + plugins[i])).toURI().toURL();		
 			}
 			
 			URLClassLoader ulc = new URLClassLoader(jars);
@@ -69,6 +70,7 @@ public class PluginController implements IPlugin, IPluginController {
 						loadedPlugins.add(plugin);
 				return true;
 			}
+			System.out.println("TESTE");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -80,6 +82,7 @@ public class PluginController implements IPlugin, IPluginController {
 	public List<IPlugin> getLoadedPlugins() {
 		return loadedPlugins;
 	}
+
 	
 	public <T> List<T> getLoadedPluginsByType(Class<T> interfaceFactory){
 		List<T> loadedPlugins = new ArrayList<T>();
@@ -97,8 +100,6 @@ public class PluginController implements IPlugin, IPluginController {
  
         for (int i = 0; i <= N - M; i++) {
             int j;
- 
- 
             for (j = 0; j < M; j++)
                 if (base.charAt(i + j)
                     != ext.charAt(j))
@@ -107,7 +108,6 @@ public class PluginController implements IPlugin, IPluginController {
             if (j == M)
                 return true;
         }
- 
         return false;
 	}
 

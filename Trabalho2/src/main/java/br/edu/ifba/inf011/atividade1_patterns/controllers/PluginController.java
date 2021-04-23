@@ -19,7 +19,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
-import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPluginController;
 
 public class PluginController implements IPlugin {
 	

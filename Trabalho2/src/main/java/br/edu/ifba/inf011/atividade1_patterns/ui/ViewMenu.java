@@ -156,6 +156,10 @@ public class ViewMenu extends JFrame {
 	}
 	
 	public void createFactory() {
+		/*
+		 * Tentativa de utilização de plugins na instanciação das fábricas
+		 */
+		
 		/*try {
 			pluginController.initPlugin();
 			plugins = pluginController.getLoadedPlugins();
@@ -163,15 +167,17 @@ public class ViewMenu extends JFrame {
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Erro ao criar fábricas.\nTente novamente!");
 		}*/
+		
+		/*
+		 * Instância as fábricas de forma convencional
+		 */
 		if(getExtension().equalsIgnoreCase("java")){
-			fabrica = FactoryJava.getInstance();
+			fabrica = FactoryJava.getInstance();//Singleton
 			editor = new JavaTextEditor(file);
-			System.out.println("TEST EDITOR JAVA");
 			this.jframe = editor.createTextEditor(file);
 			jframe.setVisible(true);
 		} else if(getExtension().equalsIgnoreCase("cpp")){
-			fabrica = FactoryCpp.getInstance();
-			System.out.println("Test editor CPP");
+			fabrica = FactoryCpp.getInstance();//Singleton
 			editor = new CppTextEditor(file);
 			this.jframe = editor.createTextEditor(file);
 			jframe.setVisible(true);
@@ -192,7 +198,7 @@ public class ViewMenu extends JFrame {
 	
 	private void btnSaveFile() {
 		try {
-			if(editor.saveFile(file)) //FALTA CORRIGIR BOTÃO DE SALVAR
+			if(editor.saveFile(this.file)) //FALTA CORRIGIR BOTÃO DE SALVAR
 				JOptionPane.showMessageDialog(null, "Saved successfully");
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Error saving file");			
@@ -214,7 +220,7 @@ public class ViewMenu extends JFrame {
 	}
 	
 	public String getExtension() {
-		if(file !=null)
+		if(file != null)
 			return FilenameUtils.getExtension(jfc.getSelectedFile().getPath());
 		return null;
 	}

@@ -11,7 +11,7 @@ public class CppCompiler implements IBuilder {
 	private CppCompiler() {}
 
 	@Override
-	public void compile(File file) {
+	public void compile(File file) throws IOException, InterruptedException {
 			Process process = null;
 			String compile = "g++ -o " + file.getPath();
 			//String execute = "g++ -o " + file.getPath();
@@ -19,13 +19,13 @@ public class CppCompiler implements IBuilder {
 			try {
 				process = Runtime.getRuntime().exec(compile);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				throw new IOException(e1);
 			}
 	    	//Process process2 = Runtime.getRuntime().exec(execute);
 	    	try {
 				process.waitFor();
 			} catch (InterruptedException e) {
-				e.printStackTrace(); 
+				throw new InterruptedException();
 			}
 	    	System.out.println("Arquivo CPP compilado: status(" + process.exitValue()+")");
 		

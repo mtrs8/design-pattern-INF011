@@ -7,6 +7,6 @@ import br.edu.ifba.inf011.atividade1_patterns.factory1.FactoryCpp;
 
 public interface IBuilder {
 	
-	public void compile(File file);
+	public void compile(File file) throws IOException, InterruptedException;
 	
 }

@@ -83,17 +83,16 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 
 
 	@Override
-	public boolean saveFile(File file) {
+	public boolean saveFile(File file) throws Exception {
 		try{
 			 String str = this.textArea.getText();
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(this.file));
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
 			 writer.write(str);		 
 			 writer.close();
 			 return true;
 		 }catch (Exception e1) {
-			 JOptionPane.showMessageDialog(null, e1.getMessage());
+			 throw new Exception(e1);
 		}
-		return false;
 	}
 	
 }

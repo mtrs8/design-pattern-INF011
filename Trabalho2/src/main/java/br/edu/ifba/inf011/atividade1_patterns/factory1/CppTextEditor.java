@@ -39,10 +39,12 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 		cp.setBorder(new CompoundBorder(UIManager.getBorder("Button.border"), null));
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setTitle("Code Editor");
+	    
 	    this.textArea = new RSyntaxTextArea(20, 60);
 	    textArea.setCodeFoldingEnabled(true);
 	    textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_CPLUSPLUS);
 	    sp = new RTextScrollPane(textArea);
+	    
 	    cp.add(sp);
 	    this.setContentPane(cp);
 	    setLocationRelativeTo(null);
@@ -81,17 +83,16 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 
 
 	@Override
-	public boolean saveFile(File file) {
+	public boolean saveFile(File file) throws Exception {
 		try{
-			 String str = this.textArea.getText();
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(this.file));
-			 writer.write(str);		 
+			 String strTemp = this.textArea.getText();
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
+			 writer.write(strTemp);		 
 			 writer.close();
 			 return true;
 		 }catch (Exception e1) {
-			 JOptionPane.showMessageDialog(null, e1.getMessage());
+			 throw new Exception(e1);
 		}
-		return false;
 	}
 	
 }

@@ -13,6 +13,10 @@ public class App{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					/*
+					 * A classe ViewMenu concentra as instâncias.
+					 * Aqui apenas executa essa classe.
+					 */
 					ViewMenu frame = new ViewMenu();
 					frame.setVisible(true);
 				} catch (Exception e) {

@@ -8,6 +8,6 @@ public interface ITextEditor {
 	
 	public JFrame createTextEditor(File file);
 	
-	public boolean saveFile(File file);
+	public boolean saveFile(File file) throws Exception;
 
 }

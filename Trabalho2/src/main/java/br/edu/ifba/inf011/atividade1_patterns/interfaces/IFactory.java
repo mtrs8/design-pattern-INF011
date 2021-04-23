@@ -8,4 +8,6 @@ public interface IFactory {
 	
 	public IBuilder criarCompilador();
 	
+	public JFrame createTextEditor(File file);
+	
 }

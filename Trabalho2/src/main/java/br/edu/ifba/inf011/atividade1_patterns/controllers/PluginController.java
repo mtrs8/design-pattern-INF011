@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,15 +17,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPluginController;
 
-public class PluginController implements IPlugin, IPluginController {
+public class PluginController implements IPlugin {
 	
-	private List<IPlugin> loadedPlugins = new ArrayList<IPlugin>();
-
+	private IFactory fabrica;
+	
 	@Override
-	public boolean initPlugin() {
+	public IFactory initPlugin() throws Exception {
 		try {
 			/*Caminho relativo dos plugins:
 			 * 	Como utilizo Windows, tive que passar o caminho desde a raiz do projeto.
@@ -36,79 +38,20 @@ public class PluginController implements IPlugin, IPluginController {
 			int i;
 			URL[] jars = new URL[plugins.length];
 			System.out.println("Plugins instalados: " + plugins.length);
-			for(i=0; i<plugins.length; i++) {
-				jars[i] = (new File(filePath + plugins[i])).toURI().toURL();		
-			}
+			List<URL> jarsList = Arrays.asList(jars);
 			
 			URLClassLoader ulc = new URLClassLoader(jars);
 			for(i=0; i<plugins.length; i++) {
 				String pluginName = plugins[i].split("\\.")[0];
-				IPlugin plugin = null;
-				int mod;
-				if(isSubString(pluginName, FileController.getExtension(plugins[i]))){
-					try {
-						Class<?> pluginClass = Class.forName(pluginName.toLowerCase() + "." + pluginName, true, ulc);
-						Constructor<?> pluginConstructor = pluginClass.getDeclaredConstructor(null);
-						mod = pluginConstructor.getModifiers();
-						if(Modifier.isPrivate(mod)) {
-							Method[] pluginMethods = pluginClass.getDeclaredMethods();
-							for(Method m : pluginMethods) {
-								mod = m.getModifiers();
-								if(Modifier.isStatic(mod)) {
-									plugin = (IPlugin) m.invoke(null);
-									break;
-								}
-							}
-						} else
-							plugin = (IPlugin) pluginClass.newInstance();
-					} catch(ClassNotFoundException | InstantiationException | IllegalAccessException  ex) {
-						Logger.getLogger(PluginController.class.getName()).log(Level.SEVERE, null, ex);
-					}
-				}
-				if(plugin != null)
-					if(plugin.initPlugin())
-						loadedPlugins.add(plugin);
-				return true;
+				Class<?> pluginClass = Class.forName(pluginName);
+				Method pluginMethod = pluginClass.getDeclaredMethod("getInstance");
+				fabrica = (IFactory) pluginMethod.invoke(null);
 			}
-			System.out.println("TESTE");
-		} catch(Exception e) {
+		} catch(ClassNotFoundException ex) {
+			throw ex;
+		} catch(Exception e){
 			e.printStackTrace();
 		}
-		return false;
-
+		return fabrica;
 	}
-
-	@Override
-	public List<IPlugin> getLoadedPlugins() {
-		return loadedPlugins;
-	}
-
-	
-	public <T> List<T> getLoadedPluginsByType(Class<T> interfaceFactory){
-		List<T> loadedPlugins = new ArrayList<T>();
-		for(IPlugin plugin : this.loadedPlugins) {
-			if(interfaceFactory.isAssignableFrom(plugin.getClass())) 
-				loadedPlugins.add((T) plugin);
-		}
-		
-		return loadedPlugins;
-	}
-	
-	private boolean isSubString(String base, String ext) {
-		int M = base.length();
-        int N = ext.length();
- 
-        for (int i = 0; i <= N - M; i++) {
-            int j;
-            for (j = 0; j < M; j++)
-                if (base.charAt(i + j)
-                    != ext.charAt(j))
-                    break;
- 
-            if (j == M)
-                return true;
-        }
-        return false;
-	}
-
 }

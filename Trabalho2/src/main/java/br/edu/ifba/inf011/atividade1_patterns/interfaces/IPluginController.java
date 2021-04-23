@@ -1,5 +1,6 @@
 package br.edu.ifba.inf011.atividade1_patterns.interfaces;
 
+import java.io.File;
 import java.util.List;
 
 public interface IPluginController {
@@ -9,6 +10,5 @@ public interface IPluginController {
 	public List<IPlugin> getLoadedPlugins();
 	
 	public <T> List<T> getLoadedPluginsByType(Class<T> interfaceFactory);
-	
 	
 }

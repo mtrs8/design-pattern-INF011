@@ -1,6 +1,8 @@
 package br.edu.ifba.inf011.atividade1_patterns.factory1;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,15 +18,13 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
-
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
+import javax.swing.JButton;
 
-public class CppTextEditor extends JFrame implements ITextEditor{
+public class CppTextEditor extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private JPanel cp;
 	private RSyntaxTextArea textArea;
@@ -32,6 +32,7 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 	private File file;
 	private FileReader reader; 
 	private BufferedReader br;
+	private JButton btnSaveFile;
 	
 	public CppTextEditor(File file){
 		this.file = file;
@@ -39,22 +40,35 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 		cp.setBorder(new CompoundBorder(UIManager.getBorder("Button.border"), null));
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setTitle("Code Editor");
-	    
 	    this.textArea = new RSyntaxTextArea(20, 60);
 	    textArea.setCodeFoldingEnabled(true);
 	    textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_CPLUSPLUS);
 	    sp = new RTextScrollPane(textArea);
-	    
 	    cp.add(sp);
 	    this.setContentPane(cp);
+	    
+	    btnSaveFile = new JButton("Save");
+	    btnSaveFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					saveFile();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+	    
+	    cp.add(btnSaveFile, BorderLayout.SOUTH);
 	    setLocationRelativeTo(null);
-	    textArea.setText(loadFile(file));
+	    textArea.setText(loadFile());
 	    textArea.setVisible(true);
 	    pack();
 	}
 	
 	
-	private String loadFile(File file) {
+	private String loadFile() {
 		String br2 = null;
 		try {
 			reader = new FileReader(file.getPath());
@@ -76,22 +90,15 @@ public class CppTextEditor extends JFrame implements ITextEditor{
 		return this.textArea.getText();
 	}
 
-	@Override
-	public JFrame createTextEditor(File file) {
-		return new CppTextEditor(file);
-	}
-
-
-	@Override
-	public boolean saveFile(File file) throws Exception {
+	private void saveFile(){
 		try{
-			 String strTemp = this.textArea.getText();
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
-			 writer.write(strTemp);		 
+			 String str = this.textArea.getText();
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(this.file.getAbsolutePath()));
+			 writer.write(str);		 
 			 writer.close();
-			 return true;
-		 }catch (Exception e1) {
-			 throw new Exception(e1);
+			 JOptionPane.showMessageDialog(null, "File successfully saved!");
+		 } catch (Exception e1) {
+			 JOptionPane.showMessageDialog(null, "Error saving file!");
 		}
 	}
 	

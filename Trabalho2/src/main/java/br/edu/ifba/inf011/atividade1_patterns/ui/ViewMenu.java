@@ -1,59 +1,34 @@
 package br.edu.ifba.inf011.atividade1_patterns.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import br.edu.ifba.inf011.atividade1_patterns.controllers.PluginController;
 import br.edu.ifba.inf011.atividade1_patterns.factory1.CppTextEditor;
 import br.edu.ifba.inf011.atividade1_patterns.factory1.FactoryCpp;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.FactoryJava;
-import br.edu.ifba.inf011.atividade1_patterns.factory2.JavaCompiler;
 import br.edu.ifba.inf011.atividade1_patterns.factory2.JavaTextEditor;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IBuilder;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IFactory;
 import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPlugin;
-import br.edu.ifba.inf011.atividade1_patterns.interfaces.IPluginController;
-import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
-
-import javax.swing.BoxLayout;
-import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
-import javax.swing.JScrollBar;
-import javax.swing.JTextField;
-
-import java.awt.Component;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.GridLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Font;
 
 @SuppressWarnings("unchecked")
 public class ViewMenu extends JFrame {
@@ -66,13 +41,10 @@ public class ViewMenu extends JFrame {
 	private IFactory fabrica;
 	private JLabel lblTitulo;
 	private JButton btnOpenFile;
-	private JButton btnSaveFile;
 	private JButton btnCompile;
 	private JFileChooser jfc; 
-	private ITextEditor editor;
-	private JFrame jframe;
-	private IPluginController pluginController;
-	private List<IPlugin> plugins;
+	private JFrame textArea;
+	private IPlugin pluginController;
 	
 	
 	public ViewMenu() throws Exception {
@@ -85,12 +57,9 @@ public class ViewMenu extends JFrame {
 		lblTitulo = new JLabel("Menu Principal");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 17));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		btnSaveFile = new JButton("Save File");
 		btnOpenFile = new JButton("Open File");
 		btnCompile = new JButton(" Compile File");
 		
-		this.plugins = new ArrayList();
 		this.pluginController = new PluginController();
 		btnOpenFile.addActionListener(new ActionListener() {
 			@Override
@@ -98,12 +67,7 @@ public class ViewMenu extends JFrame {
 				btnOpenFile();
 			}
 		});
-		btnSaveFile.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnSaveFile();
-			}
-		});
+	
 		btnCompile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -126,62 +90,54 @@ public class ViewMenu extends JFrame {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(23)
-					.addComponent(btnSaveFile, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-					.addGap(48)
-					.addComponent(btnCompile, GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-					.addContainerGap(12, Short.MAX_VALUE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(88)
-					.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(93, Short.MAX_VALUE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(126)
-					.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(132, Short.MAX_VALUE))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(25)
+							.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(btnCompile, GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(88)
+							.addComponent(lblTitulo, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(40, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-					.addGap(62)
+					.addComponent(lblTitulo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(81)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSaveFile, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnCompile, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
-					.addGap(34)
-					.addComponent(btnOpenFile, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-					.addGap(44))
+						.addComponent(btnOpenFile, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCompile, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
+					.addGap(102))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
 	
 	public void createFactory() {
-		/*
-		 * Tentativa de utilização de plugins na instanciação das fábricas
-		 */
-		
-		/*try {
-			pluginController.initPlugin();
-			plugins = pluginController.getLoadedPlugins();
-			
+		 // Utilização de plugins na instanciação das fábricas
+		//try {
+			/*fabrica = pluginController.initPlugin();
+			textArea = fabrica.createTextEditor(file);
+			textArea.setVisible(true);
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Erro ao criar fábricas.\nTente novamente!");
-		}*/
-		
-		/*
-		 * Instância as fábricas de forma convencional
-		 */
+		}
+			*/
+		 
+		// Instância as fábricas de forma convencional
 		if(getExtension().equalsIgnoreCase("java")){
 			fabrica = FactoryJava.getInstance();//Singleton
-			editor = new JavaTextEditor(file);
-			this.jframe = editor.createTextEditor(file);
-			jframe.setVisible(true);
+			textArea = new JavaTextEditor(file);
+			textArea = fabrica.createTextEditor(file);
+			textArea.setVisible(true);
 		} else if(getExtension().equalsIgnoreCase("cpp")){
 			fabrica = FactoryCpp.getInstance();//Singleton
-			editor = new CppTextEditor(file);
-			this.jframe = editor.createTextEditor(file);
-			jframe.setVisible(true);
+			textArea =  new CppTextEditor(file);
+			textArea = fabrica.createTextEditor(file);
+			textArea.setVisible(true);
 		}
+		
 	}
 	
 	private void btnOpenFile() {
@@ -194,15 +150,6 @@ public class ViewMenu extends JFrame {
 				JOptionPane.showMessageDialog(null, "Please! Choose a file!");
 			}
 			createFactory();		
-	}
-	
-	private void btnSaveFile() {
-		try {
-			if(editor.saveFile(this.file)) //FALTA CORRIGIR BOTÃO DE SALVAR
-				JOptionPane.showMessageDialog(null, "Saved successfully");
-		} catch(Exception e) {
-			JOptionPane.showMessageDialog(null, "Error saving file");			
-		}
 	}
 	
 	private void btnCompile() {

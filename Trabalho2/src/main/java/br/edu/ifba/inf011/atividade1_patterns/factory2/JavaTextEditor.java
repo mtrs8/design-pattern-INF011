@@ -1,6 +1,8 @@
 package br.edu.ifba.inf011.atividade1_patterns.factory2;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,15 +18,11 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import br.edu.ifba.inf011.atividade1_patterns.interfaces.ITextEditor;
-
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
+import javax.swing.JButton;
 
-public class JavaTextEditor extends JFrame implements ITextEditor {
+public class JavaTextEditor extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -34,6 +32,7 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 	private File file;
 	private FileReader reader; 
 	private BufferedReader br;
+	private JButton btnSaveFile;
 	
 	public JavaTextEditor(File file){
 		this.file = file;
@@ -47,6 +46,21 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 	    sp = new RTextScrollPane(textArea);
 	    cp.add(sp);
 	    this.setContentPane(cp);
+	    
+	    btnSaveFile = new JButton("Save");
+	    btnSaveFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					saveFile();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+	    
+	    cp.add(btnSaveFile, BorderLayout.SOUTH);
 	    setLocationRelativeTo(null);
 	    textArea.setText(loadFile());
 	    textArea.setVisible(true);
@@ -76,22 +90,15 @@ public class JavaTextEditor extends JFrame implements ITextEditor {
 		return this.textArea.getText();
 	}
 
-	@Override
-	public JFrame createTextEditor(File file) {
-		return new JavaTextEditor(file);
-	}
-
-
-	@Override
-	public boolean saveFile(File file) throws Exception {
+	private void saveFile(){
 		try{
 			 String str = this.textArea.getText();
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(this.file.getPath()));
 			 writer.write(str);		 
 			 writer.close();
-			 return true;
-		 }catch (Exception e1) {
-			 throw new Exception(e1);
+			 JOptionPane.showMessageDialog(null, "File successfully saved!");
+		 } catch (Exception e1) {
+			 JOptionPane.showMessageDialog(null, "Error saving file!");
 		}
 	}
 	

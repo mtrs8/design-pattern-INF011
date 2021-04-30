@@ -14,9 +14,11 @@ import org.apache.pdfbox.text.PDFTextStripperByArea;
 
 import inf011.interfaces.IDocumentAdaptee;
 
-import javax.swing.JTextPane;
-
 public class TextDocumentEditor extends JFrame {
+	
+
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel panel;
 	private File file;
 	private IDocumentAdaptee docAdaptee;

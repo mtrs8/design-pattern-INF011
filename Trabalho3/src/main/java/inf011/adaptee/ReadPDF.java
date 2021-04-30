@@ -1,4 +1,4 @@
-package inf011.models;
+package inf011.adaptee;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

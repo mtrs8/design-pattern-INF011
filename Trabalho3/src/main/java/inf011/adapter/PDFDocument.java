@@ -1,14 +1,11 @@
-package inf011.models;
+package inf011.adapter;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-
 import inf011.UI.TextDocumentEditor;
+import inf011.adaptee.ReadPDF;
 import inf011.interfaces.IDocumentAdaptee;
 import inf011.interfaces.IDocumentAdapter;
 
@@ -25,7 +22,6 @@ public class PDFDocument implements IDocumentAdapter {
 	public void setAdaptee(String extensionType) {
 		if(extensionType.equalsIgnoreCase("pdf"))
 			docAdaptee = (IDocumentAdaptee) new ReadPDF();
-		
 	}
 	
 }

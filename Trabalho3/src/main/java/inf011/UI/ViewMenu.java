@@ -1,48 +1,33 @@
 package inf011.UI;
 
-import javax.swing.JFrame;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.pdfbox.text.PDFTextStripperByArea;
-
-import inf011.interfaces.IDocumentAdapter;
-import inf011.models.PDFDocument;
-
-import java.awt.Desktop;
-import java.awt.HeadlessException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import org.apache.commons.io.FilenameUtils;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.CardLayout;
-import java.awt.GridLayout;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
-import javax.swing.BoxLayout;
-import javax.swing.JToolBar;
-import java.awt.Color;
-import javax.swing.DropMode;
+import inf011.interfaces.IDocumentAdaptee;
+import inf011.interfaces.IDocumentAdapter;
 
 public class ViewMenu extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private File file;
-	private PDDocument document;
-	private IDocumentAdapter pdfDoc;
+	private IDocumentAdapter docAdapter;
+	private IDocumentAdaptee docAdaptee;
 	private JPanel contentPane;
 	private JTextField txtShowNameFile;
 	private JLabel lblMenu;
@@ -101,11 +86,11 @@ public class ViewMenu extends JFrame {
 		if(value == JFileChooser.APPROVE_OPTION) {
 			this.file = jfc.getSelectedFile();
 			this.txtShowNameFile.setText(file.getName());
-			this.pdfDoc = new PDFDocument();
+			docAdapter.setAdaptee(FilenameUtils.getExtension(file.getName()));
 		}
 	}
 	
 	private void abrirEditor() {
-		//pdfDoc.open(file);
+		docAdaptee.openFile(file);
 	}
 }

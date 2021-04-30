@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -18,6 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
 
+import inf011.adaptee.ReadPDF;
+import inf011.adapter.PDFDocument;
 import inf011.interfaces.IDocumentAdaptee;
 import inf011.interfaces.IDocumentAdapter;
 
@@ -34,6 +37,7 @@ public class ViewMenu extends JFrame {
 	private JButton btnOpenFile;
 	private JButton btnGetEditor;
 	private JFileChooser jfc;
+	private JFrame pdfViewer;
 	
 	public ViewMenu() {
 		initComponent();
@@ -49,8 +53,8 @@ public class ViewMenu extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		this.jfc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("pdf", "docx", "txt");
-		jfc.setFileFilter(filter);
+		//FileNameExtensionFilter filter = new FileNameExtensionFilter("pdf", "docx", "txt");
+		//jfc.setFileFilter(filter);
 		this.lblMenu = new JLabel("Menu Principal");
 		lblMenu.setBounds(0, 26, 516, 48);
 		lblMenu.setFont(new Font("Liberation Serif", Font.BOLD, 24));
@@ -66,6 +70,8 @@ public class ViewMenu extends JFrame {
 		txtShowNameFile.setColumns(10);
 		btnGetEditor.setBounds(160, 272, 212, 36);
 		contentPane.add(btnGetEditor);
+		this.docAdapter = new PDFDocument();
+		this.pdfViewer = new JFrame();
 		
 		btnOpenFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,6 +97,11 @@ public class ViewMenu extends JFrame {
 	}
 	
 	private void abrirEditor() {
-		docAdaptee.openFile(file);
+		try {
+			this.pdfViewer = docAdapter.getEditor(file);
+			pdfViewer.setVisible(true);			
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "File not Found!!");
+		}
 	}
 }

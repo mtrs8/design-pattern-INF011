@@ -6,6 +6,6 @@ import javax.swing.JFrame;
 
 public interface IDocumentAdapter {
 	public void setAdaptee(String extensionType);
-	public JFrame getEditor(File file);
+	public JFrame getEditor(File file) throws Exception;
 
 }

@@ -4,9 +4,8 @@ import java.io.File;
 
 import javax.swing.JFrame;
 
-public interface IDocument {
-	
-	public void open(File file);
+public interface IDocumentAdapter {
+	public void setAdaptee(String extensionType);
 	public JFrame getEditor(File file);
 
 }

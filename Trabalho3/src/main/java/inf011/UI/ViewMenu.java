@@ -6,7 +6,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
-import inf011.interfaces.IDocument;
+import inf011.interfaces.IDocumentAdapter;
 import inf011.models.PDFDocument;
 
 import java.awt.Desktop;
@@ -42,7 +42,7 @@ public class ViewMenu extends JFrame {
 	
 	private File file;
 	private PDDocument document;
-	private IDocument pdfDoc;
+	private IDocumentAdapter pdfDoc;
 	private JPanel contentPane;
 	private JTextField txtShowNameFile;
 	private JLabel lblMenu;
@@ -94,10 +94,6 @@ public class ViewMenu extends JFrame {
 			}
 		});
 		
-		
-		//this.file = new File("C:/Users/matheus.DESKTOP-MTRS8/Desktop/design-pattern/Docs/INF011-09-adapter.pdf");
-		//this.pdfDoc = new PDFDocument();
-		//pdfDoc.open(file);
 	}
 	
 	private void buscarArquivo() {
@@ -110,6 +106,6 @@ public class ViewMenu extends JFrame {
 	}
 	
 	private void abrirEditor() {
-		pdfDoc.open(file);
+		//pdfDoc.open(file);
 	}
 }

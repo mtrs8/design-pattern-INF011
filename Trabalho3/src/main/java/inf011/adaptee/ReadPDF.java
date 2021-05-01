@@ -40,7 +40,9 @@ public class ReadPDF implements IDocumentAdaptee {
                 PDFTextStripperByArea stripper = new PDFTextStripperByArea();
                 stripper.setSortByPosition(true);
                 PDFTextStripper tStripper = new PDFTextStripper();
-                return tStripper.getText(document);
+                String text = tStripper.getText(document); 
+                //System.out.println(text);
+                return text;
             }
           return "PDF not found!";
 	

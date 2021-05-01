@@ -100,9 +100,11 @@ public class ViewMenu extends JFrame {
 	private void abrirEditor() {
 		try {
 			this.pdfViewer = docAdapter.getEditor(file);
-			pdfViewer.setVisible(true);			
+			pdfViewer.setVisible(true);
+			pdfViewer.setBounds(100, 100, 450, 300);
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "File not Found!!");
+			e.printStackTrace();
 		}
 	}
 }

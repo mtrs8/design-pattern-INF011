@@ -25,6 +25,8 @@ public class TextDocumentViewer extends JFrame {
 	private JPanel panel;
 	private File file;
 	private IDocumentAdaptee docAdaptee;
+	private JTextPane textPane;
+	private JScrollPane scrollPane;
 	
 	public TextDocumentViewer(File file) throws Exception {
 		this.file = file;
@@ -32,21 +34,25 @@ public class TextDocumentViewer extends JFrame {
 	}
 
 	private void initComponent() throws Exception {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panel.setBounds(100, 100, 450, 300);
+		//Objetos
 		this.panel = new JPanel();
+		this.textPane = new JTextPane();
+		this.scrollPane = new JScrollPane();
+		this.docAdaptee = new ReadPDF();
+		
+		//Configurações da tela
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		getContentPane().add(panel);
-		JScrollPane scrollPane = new JScrollPane();
-		panel.add(scrollPane);
-		this.docAdaptee = new ReadPDF();
-		//docAdaptee.openFile(file);
-		JTextPane textPane = new JTextPane();
+		//getContentPane().add(scrollPane);
+		this.scrollPane.add(textPane);
 		textPane.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
 		textPane.setEditable(false);
+		setVisible(true);
 		textPane.setBounds(0, 0, 434, 261);
 		getContentPane().add(textPane);
 		textPane.setText(docAdaptee.openFile2(file));
+		System.out.println(docAdaptee.openFile2(file));
 	}
 	
 }

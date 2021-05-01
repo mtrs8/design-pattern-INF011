@@ -71,7 +71,7 @@ public class ViewMenu extends JFrame {
 		txtShowNameFile.setColumns(10);
 		btnGetEditor.setBounds(160, 272, 212, 36);
 		contentPane.add(btnGetEditor);
-		this.docAdapter = new PDFDocument();
+		this.docAdapter = new PDFDocument(); //PluginName
 		this.pdfViewer = new JFrame();
 		
 		btnOpenFile.addActionListener(new ActionListener() {
@@ -104,7 +104,7 @@ public class ViewMenu extends JFrame {
 			pdfViewer.setBounds(100, 100, 450, 300);
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "File not Found!!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }

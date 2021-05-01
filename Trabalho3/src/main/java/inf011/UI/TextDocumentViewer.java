@@ -27,6 +27,7 @@ public class TextDocumentViewer extends JFrame {
 	private IDocumentAdaptee docAdaptee;
 	private JTextPane textPane;
 	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
 	
 	public TextDocumentViewer(File file) throws Exception {
 		this.file = file;
@@ -36,21 +37,22 @@ public class TextDocumentViewer extends JFrame {
 	private void initComponent() throws Exception {
 		//Objetos
 		this.panel = new JPanel();
-		this.textPane = new JTextPane();
 		this.scrollPane = new JScrollPane();
-		this.docAdaptee = new ReadPDF();
+		this.docAdaptee = new ReadPDF(); // PluginName
 		
 		//Configurações da tela
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		getContentPane().add(panel);
-		//getContentPane().add(scrollPane);
-		this.scrollPane.add(textPane);
-		textPane.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
-		textPane.setEditable(false);
+		scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
+		scrollPane.setBounds(0, 261, 432, -261);
+		getContentPane().add(scrollPane);
+		//textPane.setEditable(false);
 		setVisible(true);
-		textPane.setBounds(0, 0, 434, 261);
+		this.textPane = new JTextPane();
+		textPane.setBounds(0, 0, 432, 261);
 		getContentPane().add(textPane);
+		//getContentPane().add(textPane);
+		textPane.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
 		textPane.setText(docAdaptee.openFile2(file));
 		System.out.println(docAdaptee.openFile2(file));
 	}

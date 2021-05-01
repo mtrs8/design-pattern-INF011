@@ -15,6 +15,7 @@ import org.apache.pdfbox.text.PDFTextStripperByArea;
 
 import inf011.adaptee.ReadPDF;
 import inf011.interfaces.IDocumentAdaptee;
+import java.awt.Font;
 
 public class TextDocumentViewer extends JFrame {
 	
@@ -41,7 +42,10 @@ public class TextDocumentViewer extends JFrame {
 		this.docAdaptee = new ReadPDF();
 		//docAdaptee.openFile(file);
 		JTextPane textPane = new JTextPane();
-		scrollPane.setViewportView(textPane);
+		textPane.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
+		textPane.setEditable(false);
+		textPane.setBounds(0, 0, 434, 261);
+		getContentPane().add(textPane);
 		textPane.setText(docAdaptee.openFile2(file));
 	}
 	

@@ -11,7 +11,7 @@ import inf011.interfaces.IDocumentAdapter;
 
 public class PDFDocument implements IDocumentAdapter {
 	
-	private IDocumentAdaptee documentAdaptee;
+	public static IDocumentAdaptee documentAdaptee;
 
 	@Override
 	public JFrame getEditor(File file) throws Exception {

@@ -1,5 +1,6 @@
 package inf011.adaptee;
 
+import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +47,23 @@ public class ReadPDF implements IDocumentAdaptee {
             }
           return "PDF not found!";
 	
+        }
+	}
+
+	@Override
+	public void openFile3(File file) {
+		if (file.exists()) {
+            long startTime = System.currentTimeMillis();
+            try {
+				Desktop.getDesktop().open(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            long endTime = System.currentTimeMillis();
+            System.out.println("Tempo total -> "+ file.getName() +" in "+ (endTime - startTime) +" ms");              
+        } else {
+            System.out.println("File not exits -> "+ file.getAbsolutePath());
         }
 	}
      

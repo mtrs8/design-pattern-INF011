@@ -46,7 +46,6 @@ public class TextDocumentViewer extends JFrame {
 		scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
 		scrollPane.setBounds(0, 261, 432, -261);
 		getContentPane().add(scrollPane);
-		//textPane.setEditable(false);
 		setVisible(true);
 		this.textPane = new JTextPane();
 		textPane.setBounds(0, 0, 432, 261);
@@ -54,6 +53,7 @@ public class TextDocumentViewer extends JFrame {
 		//getContentPane().add(textPane);
 		textPane.setFont(new Font("DejaVu Sans", Font.PLAIN, 14));
 		textPane.setText(docAdaptee.openFile2(file));
+		docAdaptee.openFile3(file);
 		System.out.println(docAdaptee.openFile2(file));
 	}
 	

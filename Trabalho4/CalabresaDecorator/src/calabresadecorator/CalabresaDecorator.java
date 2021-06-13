@@ -17,7 +17,8 @@ public class CalabresaDecorator extends PizzaDecorator implements IPlugin {
 	
 	@Override
 	public void preparar() {
-		System.out.println("+ calabresa");
+		super.preparar();
+		System.out.println(" + calabresa");
 	}
 
 	@Override

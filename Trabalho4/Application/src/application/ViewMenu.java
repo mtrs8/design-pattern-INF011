@@ -24,7 +24,7 @@ public class ViewMenu extends JFrame {
 	private DefaultListModel modelChoosen;
     @SuppressWarnings("rawtypes")
 	private DefaultListModel modelList;
-    private JButton removeIngredientes;
+    private JButton addIngredientes;
     private JComboBox<String> comboBoxTypePizzas;
     private JList<String> panelEscolhido;
     private JList<String> panelDisponiveis;
@@ -32,7 +32,7 @@ public class ViewMenu extends JFrame {
     private JLabel ingredientesDisponiveis;
     private JLabel ingredientesEscolhidos;
     private JButton prepararPizza;
-    private JButton addIngredients;
+    private JButton removeIngredients;
     private JLabel typePizza;
     private JButton upButton;
     private JScrollPane scrollIngredientesDisponiveis;
@@ -55,8 +55,8 @@ public class ViewMenu extends JFrame {
         panelEscolhido = new JList<>();
         upButton = new JButton();
         downButton = new JButton();
-        removeIngredientes = new JButton();
-        addIngredients = new JButton();
+        addIngredientes = new JButton();
+        removeIngredients = new JButton();
         comboBoxTypePizzas = new JComboBox<>();
         typePizza = new JLabel();
         ingredientesDisponiveis = new JLabel();
@@ -87,11 +87,11 @@ public class ViewMenu extends JFrame {
         downButton.setFont(new Font("Tahoma", 0, 14));
         downButton.setText("Descer");
 
-        removeIngredientes.setFont(new Font("Tahoma", 0, 18));
-        removeIngredientes.setText("<");
+        addIngredientes.setFont(new Font("Tahoma", 0, 18));
+        addIngredientes.setText("<");
 
-        addIngredients.setFont(new Font("Tahoma", 0, 18));
-        addIngredients.setText(">");
+        removeIngredients.setFont(new Font("Tahoma", 0, 18));
+        removeIngredients.setText(">");
 
         prepararPizza.setFont(new Font("Tahoma", 0, 14)); 
         prepararPizza.setText("Preparar");
@@ -124,8 +124,8 @@ public class ViewMenu extends JFrame {
                                 .addComponent(scrollIngredientesDisponiveis, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
                                 .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(removeIngredientes, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(addIngredients, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(addIngredientes, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(removeIngredients, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(typePizza)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -167,9 +167,9 @@ public class ViewMenu extends JFrame {
                             .addComponent(scrollIngredientesDisponiveis, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE)
                             .addComponent(scrollIngredientesEscolhidos, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE)
                             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(addIngredients, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(removeIngredients, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
                                 .addGap(65, 65, 65)
-                                .addComponent(removeIngredientes, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addIngredientes, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
                                 .addGap(72, 72, 72)))))
                 .addGap(18, 18, 18)
                 .addComponent(prepararPizza, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
@@ -184,9 +184,9 @@ public class ViewMenu extends JFrame {
 
     public JButton getDownIngredients() {return downButton;}
 
-    public JButton getRemoveIngredients() {return removeIngredientes;}
+    public JButton getRemoveIngredients() {return removeIngredients;}
 
-    public JButton getAddIngredients() {return addIngredients;}
+    public JButton getAddIngredients() {return addIngredientes;}
 
     public JButton getPreparePizza() {return prepararPizza;}
     
